@@ -19,6 +19,7 @@ public class U {
     final String TAG = "1";
     public void log(String msg)
     {
-        Log.d(TAG,msg);
+        // null 도 문자열로 표기
+        Log.d(TAG,""+msg);
     }
 }

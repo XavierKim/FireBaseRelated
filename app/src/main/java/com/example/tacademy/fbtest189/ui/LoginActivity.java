@@ -5,8 +5,10 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.tacademy.fbtest189.R;
+import com.example.tacademy.fbtest189.uti.U;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -36,9 +38,17 @@ public class LoginActivity extends RootActivity {
         // 생성
         firebaseAuth = FirebaseAuth.getInstance();
 
-
-
         initUI();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        // 익명 로그인한 유저 객체 획득 => 로그아웃을 하지 않았다면 객체(세션) 획득 가능
+        // FirebaseUser user  = getUser();
+        if( getUser() != null){
+            Toast.makeText(this, "Login is completed !!", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void initUI(){
@@ -50,6 +60,11 @@ public class LoginActivity extends RootActivity {
             @Override
             public void onClick(View view) {
                 // 익명 로그인을 수행해라
+                if( getUser() != null){     //로그인 중인데 눌렀다.
+                    firebaseAuth.signOut(); //로그아웃
+                }else{                      //로그아웃 중인데 눌렀다.
+                    anonymouslySignUp();    //계속해서 익명 생성
+                }
 
                 anonymouslySignUp();
                 //Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -65,6 +80,10 @@ public class LoginActivity extends RootActivity {
                 if( task.isSuccessful()){
                     //성공 정보 획득
                     FirebaseUser user = getUser();
+                    if(user != null){
+                        U.getInstance().log(user.getUid());
+                        U.getInstance().log(user.getEmail();
+                    }
                 }else{
 
                 }
