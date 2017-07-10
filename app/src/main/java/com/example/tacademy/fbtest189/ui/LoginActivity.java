@@ -35,6 +35,7 @@ public class LoginActivity extends RootActivity {
     // 인증 관련 라이브러리 객체 획득
     FirebaseAuth firebaseAuth;
     EditText uMail, uPassword;
+    String email, password;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -127,8 +128,7 @@ public class LoginActivity extends RootActivity {
     public void onAnLinkEmail(){
         if(!isValid()) return;
         // 익명 계정과 이메일 비번을 연결하는 구간
-        String email = this.uMail.getText().toString();
-        String password = this.uPassword.getText().toString();
+        logInClick();
         getUser().linkWithCredential(EmailAuthProvider.getCredential(email,password))
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
@@ -151,12 +151,27 @@ public class LoginActivity extends RootActivity {
     // 3. FB Auth 중 ?메소드를 통해 처리 -> 비동기 ->
     // 이메일 비번으로부터 가입 및 로그인
     public void onEmailSignUp(){
-
+        if( !isValid() ) return;
+        // 1. 로그아웃(로그인시에만 수행)
+        // 2. 이메일, 비번 입력 후 로그인 버트 하나 추가하여
+        // 3. 클릭시 아래 함수를 호출하여 로그인 되게 구현
+        logInClick();
+        firebaseAuth.signInWithEmailAndPassword(email,password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if( task.isSuccessful()){
+                            Toast.makeText(LoginActivity.this, "이메일 로그인 성공",Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(LoginActivity.this, "이메일 로그인 실패",Toast.LENGTH_LONG).show();
+                        }
+                        stopPD();
+                    }
+                });
     }
 
     public boolean isValid(){
-        String email = this.uMail.getText().toString();
-        String password = this.uPassword.getText().toString();
+        logInClick();
         if(TextUtils.isEmpty(email)){
             this.uMail.setError("이메일을 입력하세요");
             return false;
@@ -166,5 +181,10 @@ public class LoginActivity extends RootActivity {
             return false;
         }
         return true;
+    }
+
+    public void logInClick(){
+        email = this.uMail.getText().toString();
+        password = this.uPassword.getText().toString();
     }
 }
