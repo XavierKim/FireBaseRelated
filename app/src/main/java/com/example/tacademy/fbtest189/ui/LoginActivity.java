@@ -183,8 +183,16 @@ public class LoginActivity extends RootActivity {
         return true;
     }
 
-    public void logInClick(){
+    public void logInClick(){                           //email, password 추출 코드 메소드
         email = this.uMail.getText().toString();
         password = this.uPassword.getText().toString();
     }
+
+    // 참고
+    // 이메일 비번으로 회원가입
+    // firebaseAuth.createUserWithEmailAndPassword();
+    // 이메일 검증
+    // getUser().sendEmailVerification();
+    // 비번 초기화
+    // firebaseAuth.sendPasswordResetEmail();
 }
