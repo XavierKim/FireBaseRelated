@@ -58,5 +58,18 @@
                 android:id="@+id/btn2"/>
 
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:background="#dadadada">
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:text="로그아웃"
+                android:id="@+id/btn3"/>
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

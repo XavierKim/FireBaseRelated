@@ -90,6 +90,12 @@ public class LoginActivity extends RootActivity {
 
             }
         });
+        findViewById(R.id.btn3).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                firebaseAuth.signOut();
+            }
+        });
         uMail = (EditText)findViewById(R.id.email);
         uPassword = (EditText)findViewById(R.id.password);
 
@@ -106,8 +112,9 @@ public class LoginActivity extends RootActivity {
                         U.getInstance().log(user.getUid());
                         U.getInstance().log(user.getEmail());
                     }
+                    Toast.makeText(LoginActivity.this, "익명 계정 생성 성공", Toast.LENGTH_LONG).show();
                 }else{
-
+                    Toast.makeText(LoginActivity.this, "익명 계정 생성 실패", Toast.LENGTH_LONG).show();
                 }
                 stopPD();
             }
@@ -129,8 +136,10 @@ public class LoginActivity extends RootActivity {
                         if(task.isSuccessful()){
                             // 연결이 성공, 허가된 서비스로 이동
                             U.getInstance().log("연결완료");
+                            Toast.makeText(LoginActivity.this, "이메일 연결 성공", Toast.LENGTH_LONG).show();
                         }else{
                             // 실패 사유 보이기
+                            Toast.makeText(LoginActivity.this, "이메일 연결 실패", Toast.LENGTH_LONG).show();
                         }
                     }
                 });
